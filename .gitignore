@@ -1,2 +1,5 @@
 #Stay out of the binary directory
 bin/
+
+#No clue what obj is supposed to do, so I'll keep it off the repo for now
+obj/
