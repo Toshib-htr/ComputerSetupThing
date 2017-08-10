@@ -22,6 +22,6 @@ Config file synatx can be found on the wiki (as soon as I get it up)
 Just run the compiled executable with a config file present (again, I need to get the documentation up first)
 
 ## Future Updates
-v1.1: Allow for custom configs and output file names
-v1.2: Setup a default configuration file
-v1.3+: I dunno
+v1.1: Allow for custom configs and output file names  
+v1.2: Setup a default configuration file  
+v1.3+: I dunno  
