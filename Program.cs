@@ -18,33 +18,33 @@ namespace thing
 
 		static void Main(string[] args)
 		{
-            /*Dictionary<String, String> options = read_config();
-            String name = "";
+			Dictionary<String, String> options = read_config();
+			String name = "";
 
 			string[] creds = new string[3];
 			
-            #region Active Directory Stuff
+			#region Active Directory Stuff
 			if (options.ContainsKey("join_ADD") && options["join_ADD"] == "true")
 			{
 				Console.WriteLine("Joining AD Domain.... ");
 
 				creds = join_AD_Domain((options.ContainsKey("AD_name") ? options["AD_name"] : ""),
-					(options.ContainsKey("AD_uname") ? options ["AD_uname"] : ""));
+						options.ContainsKey("AD_uname") ? options ["AD_uname"] : ""));
 
 				Console.WriteLine("done\n");
 			}
 			#endregion
 
-            #region Change the machine name
-            if (options.ContainsKey("change_name") && options["change_name"] == "true" &&
-              options.ContainsKey("sys_name"))
-            {
-                name = get_name(options["sys_name"], (options.ContainsKey("start_num") ? options["start_num"] : ""));
-                Console.Write("Changing machine name..... ");
-                    changeMachineName(name, (creds.Length > 0 ? creds : null));
-                Console.WriteLine("done.");
-            }
-            #endregion
+			#region Change the machine name
+			if (options.ContainsKey("change_name") && options["change_name"] == "true" &&
+			  options.ContainsKey("sys_name"))
+			{
+			    name = get_name(options["sys_name"], (options.ContainsKey("start_num") ? options["start_num"] : ""));
+			    Console.Write("Changing machine name..... ");
+			        changeMachineName(name, (creds.Length > 0 ? creds : null));
+			    Console.WriteLine("done.");
+			}
+			#endregion
 
 			#region Mac Address aquision
 			Console.Write("Getting MAC addresses.... ");
@@ -60,17 +60,17 @@ namespace thing
 			String[] manufact_details = get_manufact_details();
 
 			Console.WriteLine("done.\n");
-            #endregion
+			#endregion
 
-            #region Disable Automatic Updates
-            if (options.ContainsKey("disable_Update") && options["disable_Update"] == "true")
-            {
-                disable_win_update();
-            }
-            #endregion
+			#region Disable Automatic Updates
+			if (options.ContainsKey("disable_Update") && options["disable_Update"] == "true")
+			{
+			    disable_win_update();
+			}
+			#endregion
 
-            //Get notes for the machine
-            String notes = get_notes();
+			//Get notes for the machine
+			String notes = get_notes();
 
 			#region Check for output file and set it up for CSV format
 			if (!File.Exists(OUTPUT_FILE))
@@ -93,28 +93,23 @@ namespace thing
 			//Append to the output file
 			File.AppendAllText(OUTPUT_FILE, output);
 
-            #endregion
+			#endregion
 
-            #region Clear the console
-            //Clear the console for easier reading
-            try
-            {
+			#region Clear the console
+			//Clear the console for easier reading
+			try
+			{
 				Console.Clear();
 			}catch(IOException e){}
-            #endregion
+			#endregion
 
-            //See what the user wants to do once the program exits
-            clean_up();*/
+			//See what the user wants to do once the program exits
+			clean_up();
 		}
 
 		#region config reading
 		static Dictionary<String, String> read_config()
 		{
-			/*if (!File.Exists(CONFIG_FILE)) <-- When I put this on github
-			{
-				first_start();
-			}*/
-
 			//Return var
 			Dictionary<string, string> opt_prog = new Dictionary<string, string>();
 
@@ -134,7 +129,7 @@ namespace thing
 				//Loop through and add the options to the list
 				for (int i = 0; i < options_vals.Length; i++)
 				{
-                    if (options_vals[0] != "#" && options_vals[i].Length > 1)
+				        if (options_vals[0] != "#" && options_vals[i].Length > 1)
 					{
 						//These temp vars are for cleanliness
 						string temp1 = options_vals[i].Substring(0, options_vals[i].IndexOf(" "));
@@ -149,8 +144,8 @@ namespace thing
 							temp2 = options_vals[i].Substring(options_vals[i].IndexOf(" ") + 1);
 						}
 
-
-					opt_prog.Add(temp1, temp2);
+	
+						opt_prog.Add(temp1, temp2);
 					}
 				}
 			}
@@ -173,12 +168,12 @@ namespace thing
 
 			//Split it up so I can get access to the last entry name
 			string[] entries = worker.Split('\r');
-            string[] last_entry = entries[entries.Length - 2].Split(',');
-            string current = last_entry[0].Replace("\"", "");
-            String name = current.Substring(current.LastIndexOf(stem[stem.Length - 1]) + 1);
+			string[] last_entry = entries[entries.Length - 2].Split(',');
+			string current = last_entry[0].Replace("\"", "");
+			String name = current.Substring(current.LastIndexOf(stem[stem.Length - 1]) + 1);
 
 			//Get the number
-            int num = Int32.Parse(name) + 1;
+			int num = Int32.Parse(name) + 1;
 			input.Close();
 
 			//Return the name
@@ -189,30 +184,30 @@ namespace thing
 		#region Machine Name changing code
 		static void changeMachineName(String name, String[] creds)
 		{
-            Boolean on_ad = false;
+			Boolean on_ad = false;
 			SelectQuery wmi = new SelectQuery("Win32_ComputerSystem");
 			ManagementObjectSearcher x = new ManagementObjectSearcher(wmi);
 
-            object[] creds_out = new object[3];
+			object[] creds_out = new object[3];
 
-            try
-            {
-                Domain.GetComputerDomain();
-                on_ad = true;
-            }catch(ActiveDirectoryObjectNotFoundException){}
+			try
+			{
+			    Domain.GetComputerDomain();
+			    on_ad = true;
+			}catch(ActiveDirectoryObjectNotFoundException){}
 
 			foreach (ManagementObject i in x.Get())
 			{                
-                creds_out[0] = name;
-                if (creds == null && on_ad)
-                {
-                    creds = get_creds(null, "");
-                }
-                if (creds != null)
-                {
-                    creds_out[1] = creds[2];
-                    creds_out[2] = creds[1];
-                }
+			    creds_out[0] = name;
+			    if (creds == null && on_ad)
+			    {
+			        creds = get_creds(null, "");
+			    }
+			    if (creds != null)
+			    {
+			        creds_out[1] = creds[2];
+			        creds_out[2] = creds[1];
+			    }
 								   
 			   i.InvokeMethod("Rename", creds_out);
 			}
@@ -503,8 +498,8 @@ namespace thing
 		{
 			AutomaticUpdates auc = new AutomaticUpdates();
 
-            auc.Settings.NotificationLevel = AutomaticUpdatesNotificationLevel.aunlNotifyBeforeDownload;
-            auc.Settings.Save();
+			auc.Settings.NotificationLevel = AutomaticUpdatesNotificationLevel.aunlNotifyBeforeDownload;
+			auc.Settings.Save();
 		}
         #endregion
     }
